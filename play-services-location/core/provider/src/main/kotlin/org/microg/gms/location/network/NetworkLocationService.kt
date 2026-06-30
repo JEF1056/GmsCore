@@ -373,9 +373,11 @@ class NetworkLocationService : LifecycleService(), WifiDetailsCallback, CellDeta
             try {
                 val ichnaeaCandidate = ichnaea.retrieveMultiWifiLocation(wifis) { wifi, location ->
                     if (settings.wifiCaching) database.putWifiLocation(wifi, location)
-                }!!
-                ichnaeaCandidate.time = System.currentTimeMillis()
-                return ichnaeaCandidate
+                }
+                if (ichnaeaCandidate != null) {
+                    ichnaeaCandidate.time = System.currentTimeMillis()
+                    return ichnaeaCandidate
+                }
             } catch (e: Exception) {
                 Log.w(TAG, "Failed retrieving location for ${wifis.size} wifi networks", e)
             }
